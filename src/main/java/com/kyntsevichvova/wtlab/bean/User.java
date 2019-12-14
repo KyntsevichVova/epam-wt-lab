@@ -1,6 +1,6 @@
 package com.kyntsevichvova.wtlab.bean;
 
-public class User {
+public class User extends BaseEntity {
     private String login;
     private String password;
 
