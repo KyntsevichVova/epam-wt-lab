@@ -8,6 +8,11 @@ import lombok.extern.log4j.Log4j2;
 public class Main {
     public static void main(String[] args) {
         log.debug("Entered main");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         View view = ViewFactory.getInstance().getView();
         view.start();
     }
