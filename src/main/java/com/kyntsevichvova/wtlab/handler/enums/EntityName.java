@@ -1,7 +1,6 @@
 package com.kyntsevichvova.wtlab.handler.enums;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 @AllArgsConstructor

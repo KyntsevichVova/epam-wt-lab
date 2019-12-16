@@ -1,6 +1,5 @@
 package com.kyntsevichvova.wtlab;
 
-import com.kyntsevichvova.wtlab.bean.Horse;
 import com.kyntsevichvova.wtlab.handler.DataHandler;
 import com.kyntsevichvova.wtlab.service.ValidatorService;
 import com.kyntsevichvova.wtlab.service.exception.ServiceException;
@@ -13,7 +12,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 
 @Log4j2
 public class Main {
