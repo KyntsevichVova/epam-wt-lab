@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.kyntsevichvova</groupId>
-    <artifactId>wtlab</artifactId>
+    <artifactId>migrate</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>wtlab</name>
-    <description>WT Lab from EPAM</description>
+    <name>migrate</name>
+    <description>Migration tool for EPAM lab</description>
     <packaging>jar</packaging>
 
     <properties>
@@ -33,6 +33,25 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.12.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.12.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+            <version>8.0.18</version>
         </dependency>
 
     </dependencies>

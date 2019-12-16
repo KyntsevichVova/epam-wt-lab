@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Data>
+
+    <Horses>
+        <horse>
+            <id>1</id>
+            <name>Horse</name>
+            <wins>1</wins>
+        </horse>
+
+        <horse>
+            <id>2</id>
+            <name>Second Horse</name>
+            <wins>2</wins>
+        </horse>
+    </Horses>
+
+    <Races>
+        <race>
+            <id>1</id>
+            <date>2002-09-24</date>
+            <winnerId>1</winnerId>
+        </race>
+
+        <race>
+            <id>2</id>
+            <date>2002-09-25</date>
+            <winnerId>2</winnerId>
+        </race>
+    </Races>
+
+    <Bets>
+        <bet>
+            <id>1</id>
+            <user>Andrew</user>
+            <raceId>1</raceId>
+            <horseId>1</horseId>
+            <sum>120</sum>
+        </bet>
+    </Bets>
+
+</Data>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="Data" type="DataType"/>
+
+    <xs:simpleType name="idType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="horseType">
+        <xs:sequence>
+
+            <xs:element name="id" type="idType"/>
+
+            <xs:element name="name" type="xs:string"/>
+
+            <xs:element name="wins">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="0"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="HorsesType">
+        <xs:sequence>
+            <xs:element type="horseType" name="horse" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="raceType">
+        <xs:sequence>
+
+            <xs:element name="id" type="idType"/>
+
+            <xs:element name="date" type="xs:date"/>
+
+            <xs:element name="winnerId" type="idType"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RacesType">
+        <xs:sequence>
+            <xs:element type="raceType" name="race" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="betType">
+        <xs:sequence>
+
+            <xs:element type="idType" name="id"/>
+            <xs:element type="xs:string" name="user"/>
+            <xs:element type="idType" name="raceId"/>
+            <xs:element type="idType" name="horseId"/>
+            <xs:element type="xs:string" name="sum"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BetsType">
+        <xs:sequence>
+            <xs:element type="betType" name="bet"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DataType">
+        <xs:sequence>
+
+            <xs:element type="HorsesType" name="Horses"/>
+            <xs:element type="RacesType" name="Races"/>
+            <xs:element type="BetsType" name="Bets"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
