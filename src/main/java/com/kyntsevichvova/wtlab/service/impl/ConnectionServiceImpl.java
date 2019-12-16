@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.stream.Collectors;
 
 @Log4j2
 public class ConnectionServiceImpl implements ConnectionService {
@@ -33,7 +32,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager
-                        .getConnection(url + "/?user=" + username + "&password=" + password);
+                        .getConnection(url + "?user=" + username + "&password=" + password);
                 initSchema();
                 initData();
             } catch (ClassNotFoundException | SQLException e) {
@@ -48,8 +47,15 @@ public class ConnectionServiceImpl implements ConnectionService {
     private void initSchema() throws ServiceException {
         if (Files.exists(schema)) {
             try {
-                Statement statement = connection.createStatement();
-                statement.execute(String.join("", Files.readAllLines(schema)));
+
+                String[] lines = String.join("\r\n", Files.readAllLines(schema)).split(";");
+
+                for (String line : lines) {
+                    Statement statement = connection.createStatement();
+                    statement.execute(line);
+                    statement.close();
+                }
+
             } catch (SQLException | IOException e) {
                 log.error("Database error while initializing schema: " + e.getMessage());
                 throw new ServiceException(e);
@@ -60,8 +66,15 @@ public class ConnectionServiceImpl implements ConnectionService {
     private void initData() throws ServiceException {
         if (Files.exists(data)) {
             try {
-                Statement statement = connection.createStatement();
-                statement.execute(String.join("", Files.readAllLines(data)));
+
+                String[] lines = String.join("\r\n", Files.readAllLines(data)).split(";");
+
+                for (String line : lines) {
+                    Statement statement = connection.createStatement();
+                    statement.execute(line);
+                    statement.close();
+                }
+
             } catch (SQLException | IOException e) {
                 log.error("Database: " + e.getMessage());
                 throw new ServiceException(e);
