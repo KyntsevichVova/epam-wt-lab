@@ -1,6 +1,9 @@
 package com.kyntsevichvova.wtlab.servlet;
 
 import com.kyntsevichvova.wtlab.bean.Horse;
+import com.kyntsevichvova.wtlab.model.Model;
+import com.kyntsevichvova.wtlab.parser.ModelParser;
+import com.kyntsevichvova.wtlab.parser.impl.SaxParser;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.RequestDispatcher;
@@ -21,11 +24,18 @@ public class HorsesServlet extends HttpServlet {
 
         List<Horse> horses = new ArrayList<>();
 
+        Model model = Model.getInstance();
+        model.init(getServletContext());
+
+        ModelParser parser = new SaxParser();
+
         try {
-            //SaxParser parser = new SaxParser();
+
+            parser.parse(model);
+            horses = parser.getHorses();
 
         } catch (Exception e) {
-
+            log.debug("Error while parsing: " + e.getMessage());
         }
 
         req.setAttribute("horses", horses);

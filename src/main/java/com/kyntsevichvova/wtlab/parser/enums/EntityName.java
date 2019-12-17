@@ -1,4 +1,4 @@
-package com.kyntsevichvova.wtlab.handler.enums;
+package com.kyntsevichvova.wtlab.parser.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,9 @@ import lombok.Getter;
 public enum EntityName {
 
     NONE("NONE"),
-    HORSE("HORSE"),
-    RACE("RACE"),
-    BET("BET");
+    HORSE("horse"),
+    RACE("race"),
+    BET("bet");
 
     @Getter
     private String value;
