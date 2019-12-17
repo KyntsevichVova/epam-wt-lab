@@ -38,11 +38,6 @@ public class StaXParser extends ModelParser {
                 switch (event) {
                     case XMLEvent.START_ELEMENT: {
                         String qName = reader.getLocalName();
-                        String text = null;
-                        try {
-                            text = reader.getElementText();
-                            log.debug("text: " + text);
-                        } catch (XMLStreamException ignored) {}
                         Optional<ListName> l = Arrays.stream(ListName.values())
                                 .filter(listName -> listName.getValue().equals(qName))
                                 .findAny();
@@ -59,10 +54,6 @@ public class StaXParser extends ModelParser {
                             }
 
                             builder.append('<').append(qName).append('>');
-
-                            if (text != null) {
-                                builder.append(text);
-                            }
 
                         }
                         break;
@@ -114,10 +105,13 @@ public class StaXParser extends ModelParser {
                         }
                         break;
                     }
-                    /*case XMLEvent.CHARACTERS:
-                        log.debug("Chars: " + new String(reader.getTextCharacters()));
-                        builder.append(reader.getTextCharacters());
-                        break;*/
+                    case XMLEvent.CHARACTERS:
+                        String t = reader.getText().trim();
+                        if (!t.isEmpty()) {
+                            log.debug("Chars: " + t);
+                            builder.append(t);
+                        }
+                        break;
                 }
             }
 
