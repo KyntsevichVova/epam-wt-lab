@@ -17,6 +17,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -24,10 +26,15 @@ import java.util.Optional;
 public class StaXParser extends ModelParser {
     @Override
     public void parse(Model model) throws ParserException {
-        try {
-            XMLStreamReader reader = XMLInputFactory
+        XMLStreamReader reader;
+
+        try (
+                InputStream xmlStream = new ByteArrayInputStream(model.getXml().getBytes())
+        ) {
+
+            reader = XMLInputFactory
                     .newInstance()
-                    .createXMLStreamReader(new ByteArrayInputStream(model.getXml().getBytes()));
+                    .createXMLStreamReader(xmlStream);
 
             ListName list = ListName.NONE;
             StringBuilder builder = new StringBuilder();
@@ -115,7 +122,7 @@ public class StaXParser extends ModelParser {
                 }
             }
 
-        } catch (XMLStreamException e) {
+        } catch (XMLStreamException | IOException e) {
             throw new ParserException(e);
         }
     }

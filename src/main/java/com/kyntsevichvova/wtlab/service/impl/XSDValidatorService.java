@@ -3,7 +3,6 @@ package com.kyntsevichvova.wtlab.service.impl;
 import com.kyntsevichvova.wtlab.service.ValidatorService;
 import com.kyntsevichvova.wtlab.service.exception.ServiceException;
 import lombok.extern.log4j.Log4j2;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;

@@ -24,12 +24,12 @@ public class RacesServlet extends HttpServlet {
         List<Race> races = new ArrayList<>();
 
         Model model = Model.getInstance();
-        model.init(getServletContext());
 
         ModelParser parser = new StaXParser();
 
         try {
 
+            model.init(getServletContext());
             parser.parse(model);
             races = parser.getRaces();
 

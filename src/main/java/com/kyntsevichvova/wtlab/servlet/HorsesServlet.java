@@ -25,12 +25,12 @@ public class HorsesServlet extends HttpServlet {
         List<Horse> horses = new ArrayList<>();
 
         Model model = Model.getInstance();
-        model.init(getServletContext());
 
         ModelParser parser = new SaxParser();
 
         try {
 
+            model.init(getServletContext());
             parser.parse(model);
             horses = parser.getHorses();
 

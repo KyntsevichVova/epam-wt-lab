@@ -10,17 +10,18 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class SaxParser extends ModelParser {
 
     public void parse(Model model) throws ParserException {
         SaxHandler handler = new SaxHandler();
 
-        try {
+        try (InputStream xmlStream = new ByteArrayInputStream(model.getXml().getBytes())) {
 
             XMLReader reader = XMLReaderFactory.createXMLReader();
             reader.setContentHandler(handler);
-            reader.parse(new InputSource(new ByteArrayInputStream(model.getXml().getBytes())));
+            reader.parse(new InputSource(xmlStream));
 
         } catch (SAXException | IOException e) {
             throw new ParserException(e);

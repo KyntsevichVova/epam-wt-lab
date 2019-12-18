@@ -1,5 +1,6 @@
 package com.kyntsevichvova.wtlab.model;
 
+import com.kyntsevichvova.wtlab.model.exception.ModelException;
 import com.kyntsevichvova.wtlab.service.ValidatorService;
 import com.kyntsevichvova.wtlab.service.exception.ServiceException;
 import com.kyntsevichvova.wtlab.service.factory.ServiceFactory;
@@ -24,37 +25,54 @@ public class Model {
     @Getter
     private String xsd;
 
-    private Model() {}
+    private Model() {
+    }
 
-    public void init(ServletContext context) {
+    public void init(ServletContext context) throws ModelException {
         if (!initialized) {
-            try {
-                InputStream s = context.getResourceAsStream("/resources/data.xml");
-                BufferedReader r = new BufferedReader(new InputStreamReader(s));
-                xml = r.lines().collect(Collectors.joining("\r\n"));
+            try (
+                    InputStream xmlStream = context.getResourceAsStream("/resources/data.xml");
+                    InputStreamReader xmlStreamReader = new InputStreamReader(xmlStream);
+                    BufferedReader xmlReader = new BufferedReader(xmlStreamReader);
+                    InputStream xsdStream = context.getResourceAsStream("/resources/data.xsd");
+                    InputStreamReader xsdStreamReader = new InputStreamReader(xsdStream);
+                    BufferedReader xsdReader = new BufferedReader(xsdStreamReader)
+            ) {
+                xml = xmlReader
+                        .lines()
+                        .collect(Collectors.joining("\r\n"));
 
-                s = context.getResourceAsStream("/resources/data.xsd");
-                r = new BufferedReader(new InputStreamReader(s));
-                xsd = r.lines().collect(Collectors.joining("\r\n"));
+                xsd = xsdReader
+                        .lines()
+                        .collect(Collectors.joining("\r\n"));
 
                 validate(xml, xsd);
 
                 initialized = true;
-            } catch (Exception e) {
+            } catch (IOException e) {
                 log.error("Error while loading model: " + e.getMessage());
+                throw new ModelException(e);
             }
         }
     }
 
-    private void validate(String xml, String xsd) {
+    private void validate(String xml, String xsd) throws ModelException {
+
         ValidatorService service = ServiceFactory.getInstance().getValidatorService();
-        try {
+
+        try (
+                ByteArrayInputStream xmlStream = new ByteArrayInputStream(xml.getBytes());
+                ByteArrayInputStream xsdStream = new ByteArrayInputStream(xsd.getBytes())
+        ) {
+
             service.validate(
-                    new ByteArrayInputStream(xml.getBytes()),
-                    new ByteArrayInputStream((xsd.getBytes()))
+                    xmlStream,
+                    xsdStream
             );
-        } catch (ServiceException e) {
+
+        } catch (IOException | ServiceException e) {
             log.error("Error while validating model:" + e.getMessage());
+            throw new ModelException(e);
         }
     }
 

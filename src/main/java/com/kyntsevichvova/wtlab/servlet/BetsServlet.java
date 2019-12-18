@@ -24,12 +24,12 @@ public class BetsServlet extends HttpServlet {
         List<Bet> bets = new ArrayList<>();
 
         Model model = Model.getInstance();
-        model.init(getServletContext());
 
         ModelParser parser = new DomParser();
 
         try {
 
+            model.init(getServletContext());
             parser.parse(model);
             bets = parser.getBets();
 
