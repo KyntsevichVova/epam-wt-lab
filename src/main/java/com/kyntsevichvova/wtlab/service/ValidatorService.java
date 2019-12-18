@@ -2,10 +2,10 @@ package com.kyntsevichvova.wtlab.service;
 
 import com.kyntsevichvova.wtlab.service.exception.ServiceException;
 
-import java.nio.file.Path;
+import java.io.InputStream;
 
 public interface ValidatorService {
 
-    void validate(Path dataFile, Path schemaFile) throws ServiceException;
+    void validate(InputStream dataStream, InputStream schemaStream) throws ServiceException;
 
 }

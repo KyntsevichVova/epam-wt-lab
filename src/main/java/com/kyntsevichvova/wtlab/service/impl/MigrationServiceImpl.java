@@ -17,11 +17,10 @@ import java.util.List;
 public class MigrationServiceImpl implements MigrationService {
     @Override
     public void migrateHorses(Connection connection, List<Horse> horses) throws ServiceException {
-        try {
-            log.debug("Preparing statement to migrate HORSES");
-
-            PreparedStatement statement = connection
-                    .prepareStatement("INSERT INTO HORSE (id, name, wins) VALUES (?, ?, ?);");
+        try (
+                PreparedStatement statement = connection
+                .prepareStatement("INSERT INTO HORSE (id, name, wins) VALUES (?, ?, ?);")
+        ) {
 
             for (Horse horse : horses) {
                 log.debug("Migrating horse: " + horse.toString());
@@ -33,8 +32,6 @@ public class MigrationServiceImpl implements MigrationService {
                 statement.execute();
             }
 
-            statement.close();
-
         } catch (SQLException e) {
             log.error("Error migrating HORSES: " + e.getMessage());
             throw new ServiceException(e);
@@ -44,11 +41,10 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Override
     public void migrateRaces(Connection connection, List<Race> races) throws ServiceException {
-        try {
-            log.debug("Preparing statement to migrate RACES");
-
-            PreparedStatement statement = connection
-                    .prepareStatement("INSERT INTO RACE (id, `date`, winnerId) VALUES (?, ?, ?);");
+        try (
+                PreparedStatement statement = connection
+                        .prepareStatement("INSERT INTO RACE (id, `date`, winnerId) VALUES (?, ?, ?);");
+        ) {
 
             for (Race race : races) {
                 log.debug("Migrating race: " + race.toString());
@@ -60,8 +56,6 @@ public class MigrationServiceImpl implements MigrationService {
                 statement.execute();
             }
 
-            statement.close();
-
         } catch (SQLException e) {
             log.error("Error migrating RACES: " + e.getMessage());
             throw new ServiceException(e);
@@ -70,11 +64,10 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Override
     public void migrateBets(Connection connection, List<Bet> bets) throws ServiceException {
-        try {
-            log.debug("Preparing statement to migrate BETS");
-
-            PreparedStatement statement = connection
-                    .prepareStatement("INSERT INTO BET (id, user, raceId, horseId, sum) VALUES (?, ?, ?, ?, ?);");
+        try (
+                PreparedStatement statement = connection
+                        .prepareStatement("INSERT INTO BET (id, user, raceId, horseId, sum) VALUES (?, ?, ?, ?, ?);");
+        ) {
 
             for (Bet bet : bets) {
                 log.debug("Migrating bet: " + bet.toString());
@@ -87,8 +80,6 @@ public class MigrationServiceImpl implements MigrationService {
 
                 statement.execute();
             }
-
-            statement.close();
 
         } catch (SQLException e) {
             log.error("Error migrating BETS: " + e.getMessage());

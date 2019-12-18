@@ -1,12 +1,12 @@
-package com.kyntsevichvova.wtlab.handler;
+package com.kyntsevichvova.wtlab.parser.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.kyntsevichvova.wtlab.bean.Bet;
 import com.kyntsevichvova.wtlab.bean.Horse;
 import com.kyntsevichvova.wtlab.bean.Race;
-import com.kyntsevichvova.wtlab.handler.enums.EntityName;
-import com.kyntsevichvova.wtlab.handler.enums.ListName;
+import com.kyntsevichvova.wtlab.parser.enums.EntityName;
+import com.kyntsevichvova.wtlab.parser.enums.ListName;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.xml.sax.Attributes;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Log4j2
-public class DataHandler extends DefaultHandler {
+public class SaxHandler extends DefaultHandler {
 
     @Getter
     private List<Horse> horses = new ArrayList<>();
@@ -58,14 +58,14 @@ public class DataHandler extends DefaultHandler {
         log.debug("Parsing element " + qName);
 
         Optional<ListName> l = Arrays.stream(ListName.values())
-                .filter(listName -> listName.getValue().equals(qName.toUpperCase()))
+                .filter(listName -> listName.getValue().equals(qName))
                 .findAny();
 
         if (l.isPresent()) {
             list = l.get();
         } else {
             Optional<EntityName> e = Arrays.stream(EntityName.values())
-                    .filter(entityName -> entityName.getValue().equals(qName.toUpperCase()))
+                    .filter(entityName -> entityName.getValue().equals(qName))
                     .findAny();
 
             if (e.isPresent()) {
@@ -85,14 +85,14 @@ public class DataHandler extends DefaultHandler {
         log.debug("End parsing element " + qName);
 
         Optional<ListName> l = Arrays.stream(ListName.values())
-                .filter(listName -> listName.getValue().equals(qName.toUpperCase()))
+                .filter(listName -> listName.getValue().equals(qName))
                 .findAny();
 
         if (l.isPresent()) {
             list = ListName.NONE;
         } else {
             Optional<EntityName> e = Arrays.stream(EntityName.values())
-                    .filter(entityName -> entityName.getValue().equals(qName.toUpperCase()))
+                    .filter(entityName -> entityName.getValue().equals(qName))
                     .findAny();
 
             builder.append("</").append(qName).append('>');

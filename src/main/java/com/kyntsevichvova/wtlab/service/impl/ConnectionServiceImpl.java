@@ -33,8 +33,10 @@ public class ConnectionServiceImpl implements ConnectionService {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager
                         .getConnection(url + "?user=" + username + "&password=" + password);
-                initSchema();
-                initData();
+
+                executeScript(schema);
+                executeScript(data);
+
             } catch (ClassNotFoundException | SQLException e) {
                 log.error(e.getMessage());
                 throw new ServiceException(e);
@@ -44,39 +46,20 @@ public class ConnectionServiceImpl implements ConnectionService {
         return connection;
     }
 
-    private void initSchema() throws ServiceException {
-        if (Files.exists(schema)) {
+    private void executeScript(Path script) throws ServiceException {
+        if (Files.exists(script)) {
             try {
 
-                String[] lines = String.join("\r\n", Files.readAllLines(schema)).split(";");
+                String[] lines = String.join("\r\n", Files.readAllLines(script)).split(";");
 
                 for (String line : lines) {
-                    Statement statement = connection.createStatement();
-                    statement.execute(line);
-                    statement.close();
+                    try (Statement statement = connection.createStatement()) {
+                        statement.execute(line);
+                    }
                 }
 
             } catch (SQLException | IOException e) {
                 log.error("Database error while initializing schema: " + e.getMessage());
-                throw new ServiceException(e);
-            }
-        }
-    }
-
-    private void initData() throws ServiceException {
-        if (Files.exists(data)) {
-            try {
-
-                String[] lines = String.join("\r\n", Files.readAllLines(data)).split(";");
-
-                for (String line : lines) {
-                    Statement statement = connection.createStatement();
-                    statement.execute(line);
-                    statement.close();
-                }
-
-            } catch (SQLException | IOException e) {
-                log.error("Database: " + e.getMessage());
                 throw new ServiceException(e);
             }
         }
